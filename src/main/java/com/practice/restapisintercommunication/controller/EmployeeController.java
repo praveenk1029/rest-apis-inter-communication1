@@ -46,7 +46,7 @@ public class EmployeeController {
         String uri = "http://localhost:8080/rest/employee/getEmployee/6";
         RestTemplate restTemplate = new RestTemplate();
         Employee employee = restTemplate.getForObject(uri, Employee.class);
-        System.out.println("Result from Remote Api:::"+employee);
+        System.out.println("Result from Remote Api:::::"+employee);
         return employee;
     }
 }
