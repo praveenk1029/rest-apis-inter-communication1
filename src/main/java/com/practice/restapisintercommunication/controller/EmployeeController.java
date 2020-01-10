@@ -7,11 +7,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.practice.restapisintercommunication.model.Employee;
 import org.springframework.web.client.RestTemplate;
 
-import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/all/employee")
@@ -48,5 +50,21 @@ public class EmployeeController {
         Employee employee = restTemplate.getForObject(uri, Employee.class);
         System.out.println("Result from Remote Api:::::"+employee);
         return employee;
+    }
+
+    @GetMapping(value = "/getAllEmployeesFromRemoteApi")
+    public List<Employee> getAllEmployeesFromRemoteApi(){
+        String uri = "http://localhost:8080/rest/employee/getAllEmployees";
+        RestTemplate restTemplate = new RestTemplate();
+        //EmployeeList employeeList = restTemplate.getForObject(uri, EmployeeList.class);
+        List<Employee> employeeList = null;
+        ResponseEntity<Employee[]> response =
+                restTemplate.getForEntity(
+                        "http://localhost:8080/rest/employee/getAllEmployees",
+                        Employee[].class);
+        Employee[] employees = response.getBody();
+        employeeList = Arrays.asList(employees);
+        System.out.println("Result from Remote Api:::::"+employeeList);
+        return employeeList;
     }
 }
